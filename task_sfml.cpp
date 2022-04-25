@@ -107,6 +107,8 @@ int main()
     //shape.rotate(5.f);
     Clock clock;
     Time elapse;
+    Clock clock1;
+    Time elapse1;
     int k = 30;
     string r;
     //text.setString(r);
@@ -116,6 +118,7 @@ int main()
     int a = rand()%255;
     int b = rand()%255;
     int c = rand()%255;
+    int j = 0;
     //a = rand()%200;
     //shape.rotate(-10);
 
@@ -127,32 +130,42 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
         }
-        if((Keyboard::isKeyPressed(Keyboard::A)) && k < 50){
+        /*if((Keyboard::isKeyPressed(Keyboard::A)) && k < 50){
             k += 10;
         }
         if((Keyboard::isKeyPressed(Keyboard::D)) && k > 0){
             k -= 10;
         }
         r = to_string(k);
-        text.setString(r);
+        text.setString(r);*/
 
         //window.clear(Color(200,0,0));
         //window.draw(shape);
         //window.display();
-        int j = 0;
+        if(j == 45){
+            j = 0;
+        }
         //a = rand()%200;
         //b = rand()%200;
         //int i = 0;
-        while(j<45){
+
+        //elapse = clock.getElapsedTime();
+        elapse1 = clock1.getElapsedTime();
+        if(elapse1.asMilliseconds()>150){
+        if((Keyboard::isKeyPressed(Keyboard::A)) && k < 50){
+            k += 10;
+        }
+        else if((Keyboard::isKeyPressed(Keyboard::D)) && k > 0){
+            k -= 10;
+        }
+        clock1.restart();
+        }
+        r = to_string(k);
+        text.setString(r);
         elapse = clock.getElapsedTime();
         if(elapse.asMilliseconds() > k){
-        window.clear(Color(c,b,a));
-        my_Rotate(shape,2);
-        window.draw(shape);
-        window.draw(text);
-        window.display();
-        //clock.restart();
-        j++;
+                my_Rotate(shape,2);
+                j++;
         if(a != 255 && b != 255 && c != 255 && a != 0){
             a++;
         }
@@ -174,10 +187,19 @@ int main()
         if(a == 0 && b == 0 & c == 0){
             a++;
         }
-        clock.restart();
+        window.clear(Color(c,b,a));
+        //my_Rotate(shape,2);
+                clock.restart();
         }
+        window.clear(Color(c,b,a));
+        //my_Rotate(shape,2);
+        window.draw(shape);
+        window.draw(text);
+        window.display();
+        //clock.restart();
+        if(j == 45){
+            orig(shape);
         }
-        orig(shape);
     }
 
     return 0;
