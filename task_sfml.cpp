@@ -129,36 +129,19 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
+            if (event.type == sf::Event::KeyPressed){
+                    if(event.key.code == Keyboard::A && k < 50){
+                            k += 10;
+                    }
+                    else if(event.key.code == Keyboard::D && k > 0){
+                            k -= 10;
         }
-        /*if((Keyboard::isKeyPressed(Keyboard::A)) && k < 50){
-            k += 10;
-        }
-        if((Keyboard::isKeyPressed(Keyboard::D)) && k > 0){
-            k -= 10;
-        }
-        r = to_string(k);
-        text.setString(r);*/
 
-        //window.clear(Color(200,0,0));
-        //window.draw(shape);
-        //window.display();
+            }
+        }
+
         if(j == 45){
             j = 0;
-        }
-        //a = rand()%200;
-        //b = rand()%200;
-        //int i = 0;
-
-        //elapse = clock.getElapsedTime();
-        elapse1 = clock1.getElapsedTime();
-        if(elapse1.asMilliseconds()>150){
-        if((Keyboard::isKeyPressed(Keyboard::A)) && k < 50){
-            k += 10;
-        }
-        else if((Keyboard::isKeyPressed(Keyboard::D)) && k > 0){
-            k -= 10;
-        }
-        clock1.restart();
         }
         r = to_string(k);
         text.setString(r);
@@ -187,7 +170,6 @@ int main()
         if(a == 0 && b == 0 & c == 0){
             a++;
         }
-        window.clear(Color(c,b,a));
         //my_Rotate(shape,2);
                 clock.restart();
         }
