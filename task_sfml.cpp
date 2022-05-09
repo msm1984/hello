@@ -66,6 +66,7 @@ int main()
     string r;
     //Clock clock;
     Clock clock;
+    srand(time(0));
     Time time_1;
     Time time_2;
     vector<Item> items;
@@ -99,7 +100,7 @@ int main()
             }
             items.erase(remove_if(items.begin(), items.end(), outOfScreen), items.end());
             items.erase(remove_if(items.begin(), items.end(), collide), items.end());
-            items.push_back(Item({ (rand() % 11) * 100,0 }));
+            items.push_back(Item({ (rand() % 5) * 100,0 }));
         }
         Vector2f pos;
         r = to_string(score);
