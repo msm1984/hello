@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include<time.h>
 #include <string>
+#include <iostream>
 using namespace sf;
 using namespace std;
 class Item {
@@ -12,11 +13,15 @@ private:
 public:
     Item(int x, int y) {
         shape.setSize(Vector2f(100, 100));
+        //texture.loadFromFile("orange.jpg");
+        //shape.setTexture(&texture);
         shape.setPosition(x, y);
         //Texture texture;
-        texture.loadFromFile("orange.jpg");
+        if (!texture.loadFromFile("orange.png")) {
+            cout << "hello" << endl;
+        }
         shape.setTexture(&texture);
-        shape.setTextureRect(IntRect(10, 10, 270, 150));
+        //shape.setTextureRect(IntRect(10, 10, 270, 150));
         //shape.setPosition(x,y);
     }
     void movv(int x, int y) {
@@ -53,9 +58,9 @@ int main()
     //RectangleShape basket(Vector2f(100,100));
     basket.setPosition(250, 500);
     Texture texture;
-    texture.loadFromFile("hello.jpg");
+    texture.loadFromFile("basket.png");
     basket.setTexture(&texture);
-    basket.setTextureRect(IntRect(10, 10, 270, 150));
+    //basket.setTextureRect(IntRect(10, 10, 270, 150));
     Vector2f pos;
     Font font;
     font.loadFromFile("arial.ttf");
@@ -100,15 +105,16 @@ int main()
             }
             items.erase(remove_if(items.begin(), items.end(), outOfScreen), items.end());
             items.erase(remove_if(items.begin(), items.end(), collide), items.end());
-            items.push_back(Item({ (rand() % 5) * 100,0 }));
+            items.push_back(Item((rand() % 5) * 100, 0));
         }
         Vector2f pos;
         r = to_string(score);
         text.setString(r);
-        window.clear(Color::White);
+        window.clear();
         window.draw(basket);
-        for (Item item : items)
+        for (Item item : items) {
             window.draw(item.getShape());
+        }
         window.draw(text);
         window.display();
     }
