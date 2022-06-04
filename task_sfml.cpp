@@ -3,28 +3,27 @@
 #include <stdlib.h>
 #include<time.h>
 #include <string>
-#include <iostream>
 using namespace sf;
 using namespace std;
-class Item {
+Texture texture1;
+//texture1.loadFromFile("orange.jpg");
+class Item : public Drawable {
 private:
     RectangleShape shape;
-    Texture texture;
+    virtual void draw(RenderTarget& target, RenderStates states) const {
+        target.draw(shape, states);
+    }
 public:
     Item(int x, int y) {
         shape.setSize(Vector2f(100, 100));
-        //texture.loadFromFile("orange.jpg");
-        //shape.setTexture(&texture);
         shape.setPosition(x, y);
         //Texture texture;
-        if (!texture.loadFromFile("orange.png")) {
-            cout << "hello" << endl;
-        }
-        shape.setTexture(&texture);
+        //texture.loadFromFile("orange.jpg");
+        shape.setTexture(&texture1);
         //shape.setTextureRect(IntRect(10, 10, 270, 150));
         //shape.setPosition(x,y);
     }
-    void movv(int x, int y) {
+    void movv(float x, float y) {
         shape.move(x, y);
     }
     RectangleShape getShape() {
@@ -43,8 +42,8 @@ texture.loadFromFile("hello.jpg");
 basket.setTexture(&texture);
 basket.setTextureRect(IntRect(10, 10, 270, 150));*/
 bool collide(Item& item) {
-    if (item.getShape().getPosition().x == basket.getPosition().x &&
-        item.getShape().getPosition().y == basket.getPosition().y) {
+    if (basket.getGlobalBounds().intersects(item.getShape().getGlobalBounds()))
+    {
         score++;
         return true;
     }
@@ -56,6 +55,7 @@ int main()
 {
     RenderWindow window(VideoMode(600, 600), "SFML works!");
     //RectangleShape basket(Vector2f(100,100));
+    texture1.loadFromFile("orange.png");
     basket.setPosition(250, 500);
     Texture texture;
     texture.loadFromFile("basket.png");
@@ -70,16 +70,15 @@ int main()
     text.setFillColor(Color::Red);
     string r;
     //Clock clock;
-    Clock clock;
     srand(time(0));
-    Time time_1;
-    Time time_2;
     vector<Item> items;
+    Clock clock;
+    Time deltatime;
+    int k = 0;
     while (window.isOpen())
     {
-
-        //Clock clock;
-        //Time time_1;
+        deltatime = clock.getElapsedTime();
+        clock.restart();
         //Time time_2;
         sf::Event event;
         while (window.pollEvent(event))
@@ -97,24 +96,23 @@ int main()
 
 
         }
-        time_2 = clock.getElapsedTime();
-        if (time_2.asMilliseconds() > 1000) {
-            clock.restart();
+        k += deltatime.asMilliseconds();
+        if (k > 400) {
             for (auto item = items.begin(); item != items.end(); item++) {
-                item->movv(0, 100);
+                item->movv(0, 50000 * deltatime.asSeconds());
             }
             items.erase(remove_if(items.begin(), items.end(), outOfScreen), items.end());
             items.erase(remove_if(items.begin(), items.end(), collide), items.end());
             items.push_back(Item((rand() % 5) * 100, 0));
+            k = 0;
         }
         Vector2f pos;
         r = to_string(score);
         text.setString(r);
         window.clear();
         window.draw(basket);
-        for (Item item : items) {
-            window.draw(item.getShape());
-        }
+        for (Item item : items)
+            window.draw(item);
         window.draw(text);
         window.display();
     }
