@@ -86,23 +86,23 @@ int main()
             pos = basket.getPosition();
             if (event.type == Event::Closed)
                 window.close();
-            if (event.type == Event::KeyReleased) {
+            if (event.type == Event::KeyPressed) {
                 if (event.key.code == Keyboard::A && pos.x > 0)
-                    basket.move(-50, 0);
+                    basket.move(-4000 * deltatime.asSeconds(), 0);
                 if (event.key.code == Keyboard::D && pos.x < 500)
-                    basket.move(50, 0);
+                    basket.move(4000 * deltatime.asSeconds(), 0);
             }
 
 
 
         }
         k += deltatime.asMilliseconds();
+        for (auto item = items.begin(); item != items.end(); item++) {
+            item->movv(0, 250 * deltatime.asSeconds());
+        }
+        items.erase(remove_if(items.begin(), items.end(), outOfScreen), items.end());
+        items.erase(remove_if(items.begin(), items.end(), collide), items.end());
         if (k > 400) {
-            for (auto item = items.begin(); item != items.end(); item++) {
-                item->movv(0, 50000 * deltatime.asSeconds());
-            }
-            items.erase(remove_if(items.begin(), items.end(), outOfScreen), items.end());
-            items.erase(remove_if(items.begin(), items.end(), collide), items.end());
             items.push_back(Item((rand() % 5) * 100, 0));
             k = 0;
         }
