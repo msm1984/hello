@@ -83,19 +83,15 @@ int main()
         sf::Event event;
         while (window.pollEvent(event))
         {
-            pos = basket.getPosition();
             if (event.type == Event::Closed)
                 window.close();
-            if (event.type == Event::KeyPressed) {
-                if (event.key.code == Keyboard::A && pos.x > 0)
-                    basket.move(-4000 * deltatime.asSeconds(), 0);
-                if (event.key.code == Keyboard::D && pos.x < 500)
-                    basket.move(4000 * deltatime.asSeconds(), 0);
-            }
-
-
 
         }
+        pos = basket.getPosition();
+        if (Keyboard::isKeyPressed(Keyboard::A) && pos.x > 0)
+            basket.move(-400 * deltatime.asSeconds(), 0);
+        if (Keyboard::isKeyPressed(Keyboard::D) && pos.x < 500)
+            basket.move(400 * deltatime.asSeconds(), 0);
         k += deltatime.asMilliseconds();
         for (auto item = items.begin(); item != items.end(); item++) {
             item->movv(0, 250 * deltatime.asSeconds());
@@ -104,7 +100,7 @@ int main()
         items.erase(remove_if(items.begin(), items.end(), collide), items.end());
         if (k > 400) {
             items.push_back(Item((rand() % 5) * 100, 0));
-            k = 0;
+            k = -((rand() % 5 + 1) * 100);
         }
         Vector2f pos;
         r = to_string(score);
